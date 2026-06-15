@@ -1,15 +1,17 @@
 package br.com.greencontrol;
 
-public class TrechoRodovia {
+public class TrechoRodovia implements MonitoravelViaIoT {
     private double quilometroInicial;
     private double quilometroFinal;
     private double nivelVegetacao;
     private EquipeManutencao equipeResponsavel;
+    private String tipoClima;
 
-    public TrechoRodovia(double quilometroInicial, double quilometroFinal, double nivelVegetacao) {
+    public TrechoRodovia(double quilometroInicial, double quilometroFinal, double nivelVegetacao, String tipoClima) {
         this.quilometroInicial = validarQuilometro(quilometroInicial);
         this.quilometroFinal = validarQuilometro(quilometroFinal);
         this.nivelVegetacao = validarNivelVegetacao(nivelVegetacao);
+        this.tipoClima = tipoClima;
     }
 
     private double validarQuilometro(double quilometro) {
@@ -26,6 +28,30 @@ public class TrechoRodovia {
             return 0;
         }
         return nivel;
+    }
+
+    public void simularCrescimentoDoPeriodo() {
+        if (this.tipoClima != null && this.tipoClima.equalsIgnoreCase("Úmido")) {
+            // Trecho úmido cresce mais rápido (ex: taxa de 8.0cm)
+            this.registrarCrescimento(8.0);
+        } else {
+            // Trecho seco ou padrão cresce mais devagar (ex: taxa de 2.0cm)
+            this.registrarCrescimento(2.0);
+        }
+    }
+
+    public void registrarCrescimento(double taxa) {
+        if (taxa < 0) {
+            System.out.println("Erro! A taxa de crescimento deve ser positiva.");
+        } else {
+            this.nivelVegetacao += taxa;
+        }
+    }
+
+    @Override
+    public void transmitirDadosSensor() {
+        this.simularCrescimentoDoPeriodo(); // Executa o crescimento dinâmico antes de transmitir
+        System.out.println("[IoT] Dados enviados do KM " + quilometroInicial + ". Clima: " + tipoClima + " | Vegetação atual: " + this.getNivelVegetacao() + "cm");
     }
 
     public double getQuilometroInicial() {
@@ -52,20 +78,19 @@ public class TrechoRodovia {
         this.nivelVegetacao = validarNivelVegetacao(nivel);
     }
 
-    // Getter e Setter para a Associação
+    public String getTipoClima() {
+        return tipoClima;
+    }
+
+    public void setTipoClima(String tipoClima) {
+        this.tipoClima = tipoClima;
+    }
+
     public EquipeManutencao getEquipeResponsavel() {
         return equipeResponsavel;
     }
 
     public void setEquipeResponsavel(EquipeManutencao equipeResponsavel) {
         this.equipeResponsavel = equipeResponsavel;
-    }
-
-    public void registrarCrescimento(double taxa) {
-        if (taxa < 0) {
-            System.out.println("Erro! A taxa de crescimento deve ser positiva.");
-        } else {
-            this.nivelVegetacao += taxa;
-        }
     }
 }

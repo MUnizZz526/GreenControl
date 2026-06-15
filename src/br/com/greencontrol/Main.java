@@ -1,38 +1,47 @@
 package br.com.greencontrol;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
+        System.out.println("===  INICIANDO SIMULAÇÃO DA SPRINT 2 ===\n");
 
-        // --- TESTE 1: Instanciando trechos e Equipe ---
-        TrechoRodovia trechoA = new TrechoRodovia(10, 20, 5.0);
-        // Criando com valor negativo para testar sua validação:
-        TrechoRodovia trechoB = new TrechoRodovia(50, 60, -10.0);
+        TrechoRodovia t1 = new TrechoRodovia(0, 10, 12.0, "Seco");
+        TrechoRodovia t2 = new TrechoRodovia(10, 20, 25.0, "Úmido"); // Vai crescer mais rápido!
+        TrechoRodovia t3 = new TrechoRodovia(20, 30, 5.0, "Seco");
 
-        EquipeManutencao equipeAlpha = new EquipeManutencao("Equipe Alpha", "Roçada Mecânica");
+        List<TrechoRodovia> rodovia = new ArrayList<>();
+        rodovia.add(t1);
+        rodovia.add(t2);
+        rodovia.add(t3);
 
-        // --- TESTE 2: Associação ---
-        trechoB.setEquipeResponsavel(equipeAlpha);
-
-        // --- TESTE 3: Comportamento (Crescimento) ---
-        trechoA.registrarCrescimento(12.5); // Era 5.0, deve ir para 17.5
-
-        // --- EXIBIÇÃO DOS RESULTADOS ---
-        System.out.println("====== RELATÓRIO DE MONITORAMENTO ======");
-
-        System.out.println("\nTRECHO A:");
-        System.out.println("KM: " + trechoA.getQuilometroInicial() + " até " + trechoA.getQuilometroFinal());
-        System.out.println("Vegetação: " + trechoA.getNivelVegetacao() + "cm");
-
-        System.out.println("\nTRECHO B (Crítico):");
-        System.out.println("KM: " + trechoB.getQuilometroInicial() + " até " + trechoB.getQuilometroFinal());
-        System.out.println("Vegetação: " + trechoB.getNivelVegetacao() + "cm (Deveria ser 0 se o -10 foi barrado)");
-
-        // Verificando se a associação funcionou
-        if (trechoB.getEquipeResponsavel() != null) {
-            System.out.println("Equipe Alocada: " + trechoB.getEquipeResponsavel().getNome());
-            System.out.println("Especialidade: " + trechoB.getEquipeResponsavel().getEspecialidade());
+        System.out.println("--- LENDO SENSORES VIA IOT ---");
+        for (TrechoRodovia trecho : rodovia) {
+            trecho.transmitirDadosSensor();
         }
 
-        System.out.println("\n========================================");
+
+        System.out.println("\n--- RELATÓRIO DE PRIORIDADE AUTOMÁTICO ---");
+        for (TrechoRodovia trecho : rodovia) {
+            System.out.println("\nTrecho: KM " + trecho.getQuilometroInicial() + " ao " + trecho.getQuilometroFinal() + " (" + trecho.getTipoClima() + ")");
+            System.out.println("Altura da Vegetação: " + trecho.getNivelVegetacao() + "cm");
+
+            IntervencaoOperacional intervencao = null;
+
+            if (trecho.getNivelVegetacao() > 30.0) {
+                System.out.println("STATUS : PRIORIDADE ALTA");
+                intervencao = new RocadaMecanizada(); // Polimorfismo
+            } else if (trecho.getNivelVegetacao() >= 15.0) {
+                System.out.println("STATUS : PRIORIDADE MÉDIA");
+                intervencao = new Pulverizacao();     // Polimorfismo
+            } else {
+                System.out.println("STATUS : SITUAÇÃO CONTROLADA");
+            }
+
+            if (intervencao != null) {
+                intervencao.executarServico();
+            }
+        }
     }
 }

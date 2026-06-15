@@ -4,7 +4,7 @@ public class TrechoRodovia implements MonitoravelViaIoT {
     private double quilometroInicial;
     private double quilometroFinal;
     private double nivelVegetacao;
-    private EquipeManutencao equipeResponsavel;
+    private EquipeManutencao equiperesponsavel;
     private String tipoClima;
 
     public TrechoRodovia(double quilometroInicial, double quilometroFinal, double nivelVegetacao, String tipoClima) {

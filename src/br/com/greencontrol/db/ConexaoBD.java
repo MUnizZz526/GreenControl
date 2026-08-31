@@ -8,10 +8,9 @@ public class ConexaoBD {
     private static ConexaoBD instancia;
     private Connection conexao;
 
-    // Configuração com o banco Oracle da FIAP fornecido pelo professor
     private final String URL = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
 
-    // TODO: Substitua pelos seus dados reais da FIAP
+
     private final String USER = "RM566527"; // Coloque seu RM (exemplo: "RM123456")
     private final String PASS = "270806";   // Coloque sua data de nascimento (exemplo: "150804")
 

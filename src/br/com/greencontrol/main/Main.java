@@ -13,11 +13,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("=== INICIANDO SPRINT 3 - MOTIVA (PERSISTÊNCIA JDBC) ===\n");
 
-        // 1. Testar conexão com o Oracle
         ConexaoBD conexao = ConexaoBD.getInstancia();
         conexao.conectar();
 
-        // 2. Testar CRUD de Equipes
         System.out.println("--- [1/4] Testando EquipeManutencaoDAO ---");
         EquipeManutencaoDAO daoEquipe = new EquipeManutencaoDAO();
         daoEquipe.inserir(new EquipeManutencaoRecord(null, "Equipe Alfa", "Roçada Mecanizada"));
@@ -25,7 +23,6 @@ public class Main {
         List<EquipeManutencaoRecord> equipes = daoEquipe.listarTodas();
         equipes.forEach(e -> System.out.println("Equipe encontrada: " + e));
 
-        // 3. Testar CRUD de Trechos
         System.out.println("\n--- [2/4] Testando TrechoRodoviaDAO ---");
         TrechoRodoviaDAO daoTrecho = new TrechoRodoviaDAO();
         Long idEquipe = equipes.isEmpty() ? null : equipes.get(0).id();
@@ -34,7 +31,6 @@ public class Main {
         List<TrechoRodoviaRecord> trechosBD = daoTrecho.listarTodas();
         trechosBD.forEach(t -> System.out.println("Trecho no BD: " + t));
 
-        // 4. Testar CRUD de Intervenções
         System.out.println("\n--- [3/4] Testando IntervencaoOperacionalDAO ---");
         IntervencaoOperacionalDAO daoIntervencao = new IntervencaoOperacionalDAO();
         if (!trechosBD.isEmpty()) {
@@ -43,7 +39,6 @@ public class Main {
         }
         daoIntervencao.listarTodas().forEach(i -> System.out.println("Intervenção no BD: " + i));
 
-        // 5. Executar GeradorRelatorio com persistência
         System.out.println("\n--- [4/4] Executando GeradorRelatorio com Persistência ---");
         TrechoRodovia[] trechosArray = new TrechoRodovia[trechosBD.size()];
         for (int i = 0; i < trechosBD.size(); i++) {
@@ -54,12 +49,10 @@ public class Main {
         GeradorRelatorio gerador = new GeradorRelatorio();
         gerador.gerarRelatorio(trechosArray);
 
-        // 6. Consultar histórico
         System.out.println("\n--- Histórico de Relatórios Salvos no Oracle ---");
         RelatorioPrioridadeDAO daoRelatorio = new RelatorioPrioridadeDAO();
         daoRelatorio.listarTodas().forEach(r -> System.out.println(r));
 
-        // 7. Encerrar conexão
         conexao.desconectar();
         System.out.println("\n=== SPRINT 3 FINALIZADA COM SUCESSO ===");
     }

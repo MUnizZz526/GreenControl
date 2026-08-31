@@ -152,3 +152,11 @@ Rafael — RM563285
 Henrique — RM564699
 
 Victor — RM564804
+
+Evidências de Funcionamento
+
+
+<img width="824" height="231" alt="image" src="https://github.com/user-attachments/assets/30f7e0ba-1499-43cd-b3c2-207d939024e7" />
+
+<img width="1336" height="770" alt="image" src="https://github.com/user-attachments/assets/b7f72a8c-2554-4002-9285-47d110ef42b4" />
+

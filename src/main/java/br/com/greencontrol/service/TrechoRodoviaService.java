@@ -13,12 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@org.springframework.validation.annotation.Validated
 public class TrechoRodoviaService {
 
     private final TrechoRodoviaRepository trechoRepository;
     private final EquipeManutencaoService equipeService;
+    private final br.com.greencontrol.repository.IntervencaoOperacionalRepository intervencoes;
 
-    public TrechoRodoviaService(TrechoRodoviaRepository trechoRepository, EquipeManutencaoService equipeService) {
+    public TrechoRodoviaService(TrechoRodoviaRepository trechoRepository, EquipeManutencaoService equipeService, br.com.greencontrol.repository.IntervencaoOperacionalRepository intervencoes) {
+        this.intervencoes = intervencoes;
         this.trechoRepository = trechoRepository;
         this.equipeService = equipeService;
     }
@@ -38,7 +41,7 @@ public class TrechoRodoviaService {
     }
 
     @Transactional
-    public TrechoResponseDTO criar(TrechoRequestDTO dto) {
+    public TrechoResponseDTO criar(@jakarta.validation.Valid TrechoRequestDTO dto) {
         validarRegrasDominio(dto);
 
         EquipeManutencao equipe = null;
@@ -58,7 +61,7 @@ public class TrechoRodoviaService {
     }
 
     @Transactional
-    public TrechoResponseDTO atualizar(Long id, TrechoRequestDTO dto) {
+    public TrechoResponseDTO atualizar(Long id, @jakarta.validation.Valid TrechoRequestDTO dto) {
         validarRegrasDominio(dto);
 
         TrechoRodovia trecho = buscarEntidadePorId(id);
@@ -83,13 +86,18 @@ public class TrechoRodoviaService {
         if (!trechoRepository.existsById(id)) {
             throw new RecursoNaoEncontradoException("Trecho com ID " + id + " não encontrado para exclusão.");
         }
+        if (!intervencoes.findByTrechoId(id).isEmpty()) throw new org.springframework.dao.DataIntegrityViolationException("Vínculo existente");
         trechoRepository.deleteById(id);
+        trechoRepository.flush();
     }
 
     @Transactional
     public TrechoResponseDTO simularCrescimento(Long id) {
         TrechoRodovia trecho = buscarEntidadePorId(id);
         trecho.simularCrescimentoDoPeriodo();
+        if (trecho.getNivelVegetacao() > 999999.99) {
+            throw new RegraDeNegocioException("Crescimento excede o limite de armazenamento da vegetação.");
+        }
         TrechoRodovia atualizado = trechoRepository.save(trecho);
         return TrechoResponseDTO.fromEntity(atualizado);
     }
@@ -116,6 +124,7 @@ public class TrechoRodoviaService {
     }
 
     private void validarRegrasDominio(TrechoRequestDTO dto) {
+        if (!Double.isFinite(dto.quilometroInicial()) || !Double.isFinite(dto.quilometroFinal()) || !Double.isFinite(dto.nivelVegetacao())) throw new RegraDeNegocioException("Valores devem ser finitos.");
         if (dto.quilometroInicial() < 0) {
             throw new RegraDeNegocioException("Quilômetro inicial não pode ser negativo.");
         }

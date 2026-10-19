@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@org.springframework.validation.annotation.Validated
 public class IntervencaoOperacionalService {
 
     private final IntervencaoOperacionalRepository intervencaoRepository;
@@ -40,24 +41,13 @@ public class IntervencaoOperacionalService {
     }
 
     @Transactional
-    public IntervencaoResponseDTO criar(IntervencaoRequestDTO dto) {
+    public IntervencaoResponseDTO criar(@jakarta.validation.Valid IntervencaoRequestDTO dto) {
         TrechoRodovia trecho = trechoRepository.findById(dto.idTrecho())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Trecho com ID " + dto.idTrecho() + " não encontrado."));
 
         LocalDate data = dto.dataIntervencao() != null ? dto.dataIntervencao() : LocalDate.now();
 
-        // Efeito prático da intervenção sobre a vegetação do trecho (Sprint 2)
-        if (dto.tipoIntervencao().equalsIgnoreCase("RocadaMecanizada") ||
-            dto.tipoIntervencao().toLowerCase().contains("roçada") ||
-            dto.tipoIntervencao().toLowerCase().contains("rocada")) {
-            trecho.setNivelVegetacao(5.0); // Roçada reduz para 5cm padrão
-            trechoRepository.save(trecho);
-        } else if (dto.tipoIntervencao().equalsIgnoreCase("Pulverizacao") ||
-                   dto.tipoIntervencao().toLowerCase().contains("pulveriz")) {
-            double novoNivel = Math.max(0.0, trecho.getNivelVegetacao() - 10.0);
-            trecho.setNivelVegetacao(novoNivel);
-            trechoRepository.save(trecho);
-        }
+        trecho.setNivelVegetacao(br.com.greencontrol.model.EfeitoIntervencao.de(dto.tipoIntervencao()).aplicar(trecho.getNivelVegetacao()));
 
         IntervencaoOperacional intervencao = new IntervencaoOperacional(
                 dto.tipoIntervencao(),
@@ -70,7 +60,7 @@ public class IntervencaoOperacionalService {
     }
 
     @Transactional
-    public IntervencaoResponseDTO atualizar(Long id, IntervencaoRequestDTO dto) {
+    public IntervencaoResponseDTO atualizar(Long id, @jakarta.validation.Valid IntervencaoRequestDTO dto) {
         IntervencaoOperacional intervencao = buscarEntidadePorId(id);
         TrechoRodovia trecho = trechoRepository.findById(dto.idTrecho())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Trecho com ID " + dto.idTrecho() + " não encontrado."));

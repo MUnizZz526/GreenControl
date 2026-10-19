@@ -4,6 +4,8 @@ import br.com.greencontrol.dto.TrechoRequestDTO;
 import br.com.greencontrol.dto.TrechoResponseDTO;
 import br.com.greencontrol.service.TrechoRodoviaService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +29,7 @@ public class TrechoRodoviaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TrechoResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<TrechoResponseDTO> buscarPorId(@PathVariable @Positive Long id) {
         return ResponseEntity.ok(trechoService.buscarPorId(id));
     }
 
@@ -40,19 +42,19 @@ public class TrechoRodoviaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TrechoResponseDTO> atualizar(@PathVariable Long id,
+    public ResponseEntity<TrechoResponseDTO> atualizar(@PathVariable @Positive Long id,
                                                       @RequestBody @Valid TrechoRequestDTO dto) {
         return ResponseEntity.ok(trechoService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable @Positive Long id) {
         trechoService.remover(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/simular-crescimento")
-    public ResponseEntity<TrechoResponseDTO> simularCrescimento(@PathVariable Long id) {
+    public ResponseEntity<TrechoResponseDTO> simularCrescimento(@PathVariable @Positive Long id) {
         return ResponseEntity.ok(trechoService.simularCrescimento(id));
     }
 
@@ -62,7 +64,7 @@ public class TrechoRodoviaController {
     }
 
     @GetMapping("/vegetacao-minima")
-    public ResponseEntity<List<TrechoResponseDTO>> buscarPorVegetacaoMinima(@RequestParam Double minimo) {
+    public ResponseEntity<List<TrechoResponseDTO>> buscarPorVegetacaoMinima(@RequestParam @PositiveOrZero Double minimo) {
         return ResponseEntity.ok(trechoService.buscarPorNivelMinimo(minimo));
     }
 }

@@ -4,7 +4,7 @@ import br.com.greencontrol.dto.EquipeRequestDTO;
 import br.com.greencontrol.dto.EquipeResponseDTO;
 import br.com.greencontrol.service.EquipeManutencaoService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,7 +28,7 @@ public class EquipeManutencaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EquipeResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<EquipeResponseDTO> buscarPorId(@PathVariable @Positive Long id) {
         return ResponseEntity.ok(equipeService.buscarPorId(id));
     }
 
@@ -41,13 +41,13 @@ public class EquipeManutencaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EquipeResponseDTO> atualizar(@PathVariable Long id,
+    public ResponseEntity<EquipeResponseDTO> atualizar(@PathVariable @Positive Long id,
                                                       @RequestBody @Valid EquipeRequestDTO dto) {
         return ResponseEntity.ok(equipeService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable @Positive Long id) {
         equipeService.remover(id);
         return ResponseEntity.noContent().build();
     }

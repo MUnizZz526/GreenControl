@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@org.springframework.validation.annotation.Validated
 public class EquipeManutencaoService {
 
     private final EquipeManutencaoRepository equipeRepository;
+    private final br.com.greencontrol.repository.TrechoRodoviaRepository trechos;
 
-    public EquipeManutencaoService(EquipeManutencaoRepository equipeRepository) {
+    public EquipeManutencaoService(EquipeManutencaoRepository equipeRepository, br.com.greencontrol.repository.TrechoRodoviaRepository trechos) {
+        this.trechos = trechos;
         this.equipeRepository = equipeRepository;
     }
 
@@ -34,14 +37,14 @@ public class EquipeManutencaoService {
     }
 
     @Transactional
-    public EquipeResponseDTO criar(EquipeRequestDTO dto) {
+    public EquipeResponseDTO criar(@jakarta.validation.Valid EquipeRequestDTO dto) {
         EquipeManutencao equipe = new EquipeManutencao(dto.nome(), dto.especialidade());
         EquipeManutencao salva = equipeRepository.save(equipe);
         return EquipeResponseDTO.fromEntity(salva);
     }
 
     @Transactional
-    public EquipeResponseDTO atualizar(Long id, EquipeRequestDTO dto) {
+    public EquipeResponseDTO atualizar(Long id, @jakarta.validation.Valid EquipeRequestDTO dto) {
         EquipeManutencao equipe = buscarEntidadePorId(id);
         equipe.setNome(dto.nome());
         equipe.setEspecialidade(dto.especialidade());
@@ -54,7 +57,9 @@ public class EquipeManutencaoService {
         if (!equipeRepository.existsById(id)) {
             throw new RecursoNaoEncontradoException("Equipe com ID " + id + " não encontrada para exclusão.");
         }
+        if (!trechos.findByEquipeId(id).isEmpty()) throw new org.springframework.dao.DataIntegrityViolationException("Vínculo existente");
         equipeRepository.deleteById(id);
+        equipeRepository.flush();
     }
 
     @Transactional(readOnly = true)

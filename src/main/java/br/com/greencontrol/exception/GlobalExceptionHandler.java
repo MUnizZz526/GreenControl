@@ -54,12 +54,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<ErroRespostaDTO> handleIntegridade(Exception ex) {
+        return ResponseEntity.status(409).body(new ErroRespostaDTO(409, "Conflito de integridade", "O recurso possui vínculos ou viola uma restrição de integridade."));
+    }
+
+    @ExceptionHandler({org.springframework.http.converter.HttpMessageNotReadableException.class,
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class,
+            org.springframework.web.bind.MissingServletRequestParameterException.class,
+            org.springframework.web.method.annotation.HandlerMethodValidationException.class,
+            jakarta.validation.ConstraintViolationException.class})
+    public ResponseEntity<ErroRespostaDTO> handleEntrada(Exception ex) {
+        return ResponseEntity.badRequest().body(new ErroRespostaDTO(400, "Entrada inválida", "Verifique o JSON, os parâmetros e os formatos informados."));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroRespostaDTO> handleGenerico(Exception ex) {
         ErroRespostaDTO erro = new ErroRespostaDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Erro Interno do Servidor",
-                ex.getMessage() != null ? ex.getMessage() : "Ocorreu um erro inesperado."
+                "Ocorreu um erro inesperado no servidor."
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }

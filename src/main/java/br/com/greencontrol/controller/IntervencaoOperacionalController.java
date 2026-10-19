@@ -4,6 +4,7 @@ import br.com.greencontrol.dto.IntervencaoRequestDTO;
 import br.com.greencontrol.dto.IntervencaoResponseDTO;
 import br.com.greencontrol.service.IntervencaoOperacionalService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +28,7 @@ public class IntervencaoOperacionalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IntervencaoResponseDTO> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<IntervencaoResponseDTO> buscarPorId(@PathVariable @Positive Long id) {
         return ResponseEntity.ok(intervencaoService.buscarPorId(id));
     }
 
@@ -40,13 +41,13 @@ public class IntervencaoOperacionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IntervencaoResponseDTO> atualizar(@PathVariable Long id,
+    public ResponseEntity<IntervencaoResponseDTO> atualizar(@PathVariable @Positive Long id,
                                                             @RequestBody @Valid IntervencaoRequestDTO dto) {
         return ResponseEntity.ok(intervencaoService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable Long id) {
+    public ResponseEntity<Void> remover(@PathVariable @Positive Long id) {
         intervencaoService.remover(id);
         return ResponseEntity.noContent().build();
     }
@@ -57,7 +58,7 @@ public class IntervencaoOperacionalController {
     }
 
     @GetMapping("/trecho/{trechoId}")
-    public ResponseEntity<List<IntervencaoResponseDTO>> buscarPorTrecho(@PathVariable Long trechoId) {
+    public ResponseEntity<List<IntervencaoResponseDTO>> buscarPorTrecho(@PathVariable @Positive Long trechoId) {
         return ResponseEntity.ok(intervencaoService.buscarPorTrecho(trechoId));
     }
 }

@@ -5,6 +5,7 @@ Arquivos ignorados de cache, logs completos locais e JDK nao fazem parte da entr
 
 | Estado | Arquivo | Motivo |
 |---|---|---|
+| A | `.gitattributes` | Preserva LF no wrapper Unix, CRLF no Windows e bytes/espacos dos cabecalhos HTTP reais. |
 | A | `.env.example` | Placeholders de configuracao, sem segredos reais. |
 | M | `.gitignore` | Ignora segredos locais e caches Maven/JDK de homologacao. |
 | D | `.idea/.gitignore` | Retirado do versionamento; artefato local de IDE ignorado. |

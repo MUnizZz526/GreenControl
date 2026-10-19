@@ -43,6 +43,6 @@ class HttpEvidenceTest {
         request("POST","/api/trechos",body.replace("65","-1"),400);
         request("GET","/api/trechos/"+id,null,404);
         Path output=Path.of("docs/evidencias/http-h2.md");
-        Files.createDirectories(output.getParent()); Files.writeString(output,evidence.toString());
+        Files.createDirectories(output.getParent()); Files.writeString(output,evidence.toString().stripTrailing()+"\n");
     }
 }

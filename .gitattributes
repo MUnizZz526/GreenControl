@@ -1,0 +1,5 @@
+# Wrapper Unix must retain LF, including Windows checkouts.
+/mvnw text eol=lf
+/mvnw.cmd text eol=crlf
+# Raw HTTP headers include protocol whitespace and final CRLF by definition.
+/docs/evidencias/curl/*-headers.txt -text -whitespace

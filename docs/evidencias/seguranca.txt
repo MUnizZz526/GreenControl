@@ -1,0 +1,7 @@
+Verificacao dos arquivos atuais versionados e novos nao ignorados.
+Valores antigos comparados internamente, sem reproduzi-los.
+Senhas antigas, usuarios em configuracao/codigo e padroes de token/chave: 0 ocorrencia(s).
+Excecao revisada: identificador academico publico no README coincide com usuario antigo; lista de integrantes preservada por exigencia.
+JDBC/SQL manual ou System.out no codigo ativo: 0 arquivo(s).
+Nao substitui scanner especializado nem remove historico Git.
+Credenciais antigas devem ser rotacionadas no Oracle.

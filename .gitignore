@@ -58,4 +58,4 @@ Thumbs.db
 application-local.properties
 
 .maven-local/
-audit_edits.py
+.jdk17/

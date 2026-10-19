@@ -1,0 +1,23 @@
+Comando: .\mvnw.cmd -B clean verify
+JAVA_HOME: Temurin 17.0.20.1+1 (cache local ignorado)
+Maven Wrapper: Apache Maven 3.10.0
+Banco: H2 em memória; Oracle não utilizado
+
+[INFO] --- compiler:3.15.0:compile (default-compile) @ greencontrol ---
+[INFO] Compiling 31 source files with javac [debug parameters release 17] to target\classes
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ greencontrol ---
+[INFO] Compiling 6 source files with javac [debug parameters release 17] to target\test-classes
+2026-10-19T11:02:05.460-03:00  INFO 14244 --- [greencontrol-test] [           main] b.c.g.EquipeManutencaoControllerTest     : Started EquipeManutencaoControllerTest in 3.435 seconds (process running for 4.357)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.657 s -- in br.com.greencontrol.EquipeManutencaoControllerTest
+2026-10-19T11:02:07.070-03:00  INFO 14244 --- [greencontrol-test] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 62869 (http) with context path '/'
+2026-10-19T11:02:07.073-03:00  INFO 14244 --- [greencontrol-test] [           main] br.com.greencontrol.HttpEvidenceTest     : Started HttpEvidenceTest in 0.643 seconds (process running for 5.97)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.038 s -- in br.com.greencontrol.HttpEvidenceTest
+2026-10-19T11:02:07.692-03:00  INFO 14244 --- [greencontrol-test] [           main] b.c.g.IdentitySequenceCompatibilityTest  : Started IdentitySequenceCompatibilityTest in 0.326 seconds (process running for 6.589)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.349 s -- in br.com.greencontrol.IdentitySequenceCompatibilityTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in br.com.greencontrol.RelatorioPrioridadeControllerTest
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.544 s -- in br.com.greencontrol.Sprint4IntegrationTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s -- in br.com.greencontrol.TrechoRodoviaControllerTest
+[INFO] Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  12.550 s
+[INFO] Finished at: 2026-10-19T11:02:09-03:00

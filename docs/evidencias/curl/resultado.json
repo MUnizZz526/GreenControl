@@ -1,0 +1,56 @@
+[
+  {
+    "metodo": "POST",
+    "caminho": "/api/trechos",
+    "status": 201,
+    "resposta": "01-post-trecho-response.txt"
+  },
+  {
+    "metodo": "GET",
+    "caminho": "/api/trechos/1",
+    "status": 200,
+    "resposta": "02-get-trecho-response.txt"
+  },
+  {
+    "metodo": "PUT",
+    "caminho": "/api/trechos/1",
+    "status": 200,
+    "resposta": "03-put-trecho-response.txt"
+  },
+  {
+    "metodo": "POST",
+    "caminho": "/api/relatorios",
+    "status": 201,
+    "resposta": "04-post-relatorio-response.txt"
+  },
+  {
+    "metodo": "GET",
+    "caminho": "/api/relatorios",
+    "status": 200,
+    "resposta": "05-get-historico-response.txt"
+  },
+  {
+    "metodo": "GET",
+    "caminho": "/api/relatorios/periodo?inicio=2026-10-19&fim=2026-10-19",
+    "status": 200,
+    "resposta": "06-get-periodo-response.txt"
+  },
+  {
+    "metodo": "DELETE",
+    "caminho": "/api/trechos/1",
+    "status": 204,
+    "resposta": "07-delete-trecho-response.txt"
+  },
+  {
+    "metodo": "POST",
+    "caminho": "/api/trechos",
+    "status": 400,
+    "resposta": "08-invalido-response.txt"
+  },
+  {
+    "metodo": "GET",
+    "caminho": "/api/trechos/1",
+    "status": 404,
+    "resposta": "09-inexistente-response.txt"
+  }
+]

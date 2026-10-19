@@ -1,0 +1,1 @@
+[{"id":1,"qtUrgente":0,"qtCritico":0,"qtAtencao":1,"qtNormal":0,"resumo":"Análise de prioridade realizada para 1 trecho(s) monitorado(s).","dataGeracao":"2026-10-19T11:01:25.676163"}]

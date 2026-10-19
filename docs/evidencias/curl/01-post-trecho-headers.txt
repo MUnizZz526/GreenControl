@@ -1,0 +1,6 @@
+HTTP/1.1 201 
+Location: http://localhost:18080/api/trechos/1
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 19 Oct 2026 14:01:25 GMT
+

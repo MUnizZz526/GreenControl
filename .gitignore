@@ -51,3 +51,11 @@ temp*/
 # OS files
 .DS_Store
 Thumbs.db
+# Configuração privada
+.env
+.env.*
+!.env.example
+application-local.properties
+
+.maven-local/
+audit_edits.py

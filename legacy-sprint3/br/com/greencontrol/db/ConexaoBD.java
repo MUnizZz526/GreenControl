@@ -8,11 +8,11 @@ public class ConexaoBD {
     private static ConexaoBD instancia;
     private Connection conexao;
 
-    private final String URL = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
+    private final String URL = System.getenv("DB_URL");
 
 
-    private final String USER = "RM566527"; // Coloque seu RM (exemplo: "RM123456")
-    private final String PASS = "270806";   // Coloque sua data de nascimento (exemplo: "150804")
+    private final String USER = System.getenv("DB_USER"); // Coloque seu RM (exemplo: "RM123456")
+    private final String PASS = System.getenv("DB_PASSWORD");
 
     private ConexaoBD() {}
 
@@ -30,9 +30,9 @@ public class ConexaoBD {
                 conexao = DriverManager.getConnection(URL, USER, PASS);
             }
         } catch (ClassNotFoundException e) {
-            System.err.println("Driver JDBC não encontrado. Verifique se o ojdbc17.jar está no classpath: " + e.getMessage());
+            System.err.println("Driver JDBC não encontrado. Verifique se o ojdbc17.jar está no classpath: ");
         } catch (SQLException e) {
-            System.err.println("Erro de conexão no Oracle FIAP: " + e.getMessage());
+            System.err.println("Erro de conexão no Oracle FIAP: ");
         }
         return conexao;
     }
@@ -43,7 +43,7 @@ public class ConexaoBD {
                 conexao.close();
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao fechar conexão: " + e.getMessage());
+            System.err.println("Erro ao fechar conexão: ");
         }
     }
 }

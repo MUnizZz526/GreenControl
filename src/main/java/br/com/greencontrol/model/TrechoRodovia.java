@@ -8,7 +8,8 @@ import java.util.Objects;
 public class TrechoRodovia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GC_TRECHO")
+    @SequenceGenerator(name = "SEQ_GC_TRECHO", sequenceName = "SEQ_GC_TRECHO", allocationSize = 1)
     @Column(name = "ID_TRECHO")
     private Long id;
 
@@ -123,12 +124,12 @@ public class TrechoRodovia {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TrechoRodovia that = (TrechoRodovia) o;
-        return Objects.equals(id, that.id);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 
     @Override

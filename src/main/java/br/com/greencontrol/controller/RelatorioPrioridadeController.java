@@ -2,14 +2,10 @@ package br.com.greencontrol.controller;
 
 import br.com.greencontrol.dto.RelatorioResponseDTO;
 import br.com.greencontrol.service.RelatorioPrioridadeService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -49,23 +45,6 @@ public class RelatorioPrioridadeController {
             @RequestParam(required = false) String inicio,
             @RequestParam(required = false) String fim) {
 
-        LocalDateTime dataInicio = parseDataHora(inicio, LocalDateTime.now().minusMonths(1));
-        LocalDateTime dataFim = parseDataHora(fim, LocalDateTime.now());
-
-        return ResponseEntity.ok(relatorioService.consultarPorPeriodo(dataInicio, dataFim));
-    }
-
-    private LocalDateTime parseDataHora(String valor, LocalDateTime padrao) {
-        if (valor == null || valor.isBlank()) {
-            return padrao;
-        }
-        try {
-            if (valor.contains("T")) {
-                return LocalDateTime.parse(valor);
-            }
-            return LocalDate.parse(valor).atTime(LocalTime.MIN);
-        } catch (Exception e) {
-            return padrao;
-        }
+        return ResponseEntity.ok(relatorioService.consultarPorPeriodo(inicio, fim));
     }
 }

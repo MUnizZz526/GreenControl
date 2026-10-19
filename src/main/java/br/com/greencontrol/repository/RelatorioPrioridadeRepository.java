@@ -13,6 +13,8 @@ public interface RelatorioPrioridadeRepository extends JpaRepository<RelatorioPr
     // Derived Query exigida: consulta relatórios históricos dentro de um período
     List<RelatorioPrioridade> findByDataGeracaoBetween(LocalDateTime inicio, LocalDateTime fim);
 
+    List<RelatorioPrioridade> findByDataGeracaoGreaterThanEqualAndDataGeracaoLessThan(LocalDateTime inicio, LocalDateTime fim);
+
     // Derived Query: ordenação decrescente por data de geração
     List<RelatorioPrioridade> findAllByOrderByDataGeracaoDesc();
 }

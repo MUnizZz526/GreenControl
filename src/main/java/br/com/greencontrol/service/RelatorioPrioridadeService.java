@@ -38,15 +38,11 @@ public class RelatorioPrioridadeService {
         int qtNormal = 0;
 
         for (TrechoRodovia t : trechos) {
-            double veg = t.getNivelVegetacao() != null ? t.getNivelVegetacao() : 0.0;
-            if (veg > 60.0) {
-                qtUrgente++;
-            } else if (veg > 30.0) {
-                qtCritico++;
-            } else if (veg >= 15.0) {
-                qtAtencao++;
-            } else {
-                qtNormal++;
+            switch (t.obterNivelPrioridade()) {
+                case "URGENTE" -> qtUrgente++;
+                case "CRITICO" -> qtCritico++;
+                case "ATENCAO" -> qtAtencao++;
+                default -> qtNormal++;
             }
         }
 
@@ -73,10 +69,25 @@ public class RelatorioPrioridadeService {
     }
 
     @Transactional(readOnly = true)
-    public List<RelatorioResponseDTO> consultarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
-        return relatorioRepository.findByDataGeracaoBetween(inicio, fim)
-                .stream()
-                .map(RelatorioResponseDTO::fromEntity)
-                .toList();
+    public List<RelatorioResponseDTO> consultarPorPeriodo(String inicio, String fim) {
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime de = parse(inicio, agora.minusMonths(1), false);
+        LocalDateTime ate = parse(fim, agora, true);
+        if (de.isAfter(ate) || (fim != null && !fim.contains("T") && !de.isBefore(ate))) throw new br.com.greencontrol.exception.RegraDeNegocioException("Início deve ser anterior ou igual ao fim.");
+        var resultados = fim != null && !fim.contains("T")
+                ? relatorioRepository.findByDataGeracaoGreaterThanEqualAndDataGeracaoLessThan(de, ate)
+                : relatorioRepository.findByDataGeracaoBetween(de, ate);
+        return resultados.stream().map(RelatorioResponseDTO::fromEntity).toList();
+    }
+
+    private LocalDateTime parse(String valor, LocalDateTime padrao, boolean finalPeriodo) {
+        if (valor == null) return padrao;
+        try {
+            if (valor.contains("T")) return LocalDateTime.parse(valor);
+            var dia = java.time.LocalDate.parse(valor);
+            return (finalPeriodo ? dia.plusDays(1) : dia).atStartOfDay();
+        } catch (java.time.DateTimeException ex) {
+            throw new br.com.greencontrol.exception.RegraDeNegocioException("Data inválida. Use yyyy-MM-dd ou yyyy-MM-ddTHH:mm:ss.");
+        }
     }
 }
